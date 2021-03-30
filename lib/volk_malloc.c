@@ -69,7 +69,10 @@ void* volk_malloc(size_t size, size_t alignment)
     }
 #elif defined(_MSC_VER)
     void* ptr = _aligned_malloc(size, alignment);
-#else
+#else  // ensure requested size is multiple of alignment
+    while ((size % alignment) != 0){
+      size++;
+    }
     void* ptr = aligned_alloc(alignment, size);
 #endif
     if (ptr == NULL) {
